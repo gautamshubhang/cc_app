@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
 import 'main.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 
 List<Widget> grid(){
   List<Widget> lt = [];
   var a = ln.length;
   while (a>=1){
-    lt.add(fl(title: (ln.elementAt(a-1)).elementAt(0), answer: (ln.elementAt(a-1)).elementAt(1), no: a,),);
+    lt.add(fl(title: ln[a-1].question, answer: ln[a-1].answer, no: a,),);
     a = a - 1;
   }
   return lt;
@@ -33,7 +34,9 @@ class fl extends StatelessWidget {
           Row(
             mainAxisAlignment: MainAxisAlignment.end,
             children: [
-              IconButton(onPressed: (){ln.removeAt(no-1);runApp(MaterialApp(home: MyApp(),));}, icon: Icon(Icons.delete,size: 20, ))
+              IconButton(onPressed: (){final dq = FirebaseFirestore.instance.collection('question').doc(title);
+                dq.delete();
+                readquestions();}, icon: Icon(Icons.delete,size: 20, ))
             ],
           )
         ],
